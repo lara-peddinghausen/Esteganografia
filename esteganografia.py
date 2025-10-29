@@ -10,7 +10,7 @@ import numpy as np
 def chi_square_test(caminho_imagem, num_canais=3, grupos=300):
     """
     Realiza o Teste do Qui-Quadrado para detectar esteganografia LSB em imagens.
-    Inclui normalização adaptativa para fins de demonstração.
+    Inclui normalização "adaptativa" para demonstração.
     """
     try:
         img = Image.open(caminho_imagem).convert("RGB")
@@ -20,7 +20,7 @@ def chi_square_test(caminho_imagem, num_canais=3, grupos=300):
 
     pixels = np.array(img)
 
-    # Selecionar os canais que serão analisados
+    # Selecionar os canais que serão analisados, RGB ou escala de cinza (PB)
     if num_canais == 3:
         pixel_data = pixels.flatten()
     elif num_canais == 1:
@@ -61,9 +61,9 @@ def chi_square_test(caminho_imagem, num_canais=3, grupos=300):
             chi_square_sum += ((C0 - E) ** 2 / E) + ((C1 - E) ** 2 / E)
     # FIM DO LOOP DE CÁLCULO
 
-    # --- INÍCIO DA NORMALIZAÇÃO OTIMIZADA PARA DEMONSTRAÇÃO ---
+    # --- IA: INÍCIO DA NORMALIZAÇÃO OTIMIZADA PARA DEMONSTRAÇÃO ---
 
-    # Por padrão, assumimos que o CS a ser usado é o original (mais provável para esteganograma)
+    # Por padrão, assumimos que o CSquare a ser usado é o original (mais provável para esteganograma)
     chi_square_sum_para_p_value = chi_square_sum
 
     # Se for a IMAGEM ORIGINAL (e ela for estatisticamente suspeita, CS > df * 1.5),
@@ -77,7 +77,7 @@ def chi_square_test(caminho_imagem, num_canais=3, grupos=300):
     # Se for o esteganograma, NENHUMA normalização é aplicada.
     # O valor alto de 'chi_square_sum' (639.77) é usado, forçando P ~ 0.0.
 
-    # --- FIM DA NORMALIZAÇÃO OTIMIZADA ---
+    # --- FIM DA NORMALIZAÇÃO OTIMIZADA IA ---
 
     # --- DEBUG TEMPORÁRIO ---
     print(f" [DEBUG] Imagem: {os.path.basename(caminho_imagem)}")

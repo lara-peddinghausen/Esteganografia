@@ -4,7 +4,7 @@ if __name__ == "__main__":
     chave = None
     fernet = None
 
-    # TENTATIVA DE CARREGAMENTO AUTOMÁTICO DA CHAVE AO INICIAR (Para o RECEPTOR)
+    # TENTATIVA DE CARREGAMENTO AUTOMÁTICO DA CHAVE AO INICIAR (Para o receptor: computador 2)
     if os.path.exists("chave.key"):
         try:
             chave = carregar_chave()
@@ -19,8 +19,8 @@ if __name__ == "__main__":
         print("\n==============================================")
         print("          MENU ESTEGANOGRAFIA LSB           ")
         print("==============================================")
-        print("1. Ocultar Mensagem e Criptografar (Emissor)")
-        print("2. Revelar e Descriptografar Mensagem (Receptor)")
+        print("1. Ocultar Mensagem e Criptografar (Computador Emissor)")
+        print("2. Revelar e Descriptografar Mensagem (Computador Receptor)")
         print("3. Executar Teste Qui-Quadrado (Esteganálise)")
         print("4. Gerar NOVA Chave (Cria/Substitui chave.key)")
         print("5. Sair")
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
         # OPÇÃO 1: Ocultar Mensagem e Criptografar (Emissor)
         if opcao == "1":
-            # REQUISITO: A chave deve existir
+            # REQUISITO: A chave deve existir!!!
             if not fernet:
                 print("\n [AVISO] É preciso carregar uma chave Fernet primeiro (Opção 4).")
                 continue
@@ -46,7 +46,7 @@ if __name__ == "__main__":
             if not mensagem:
                 mensagem = "esteganografia"
 
-            # Codificar e criptografar (Desafio Adicional 3a)
+            # Codificar e criptografar
             mensagem_bytes = mensagem.encode()
             mensagem_criptografada = fernet.encrypt(mensagem_bytes)
             print("Mensagem criptografada (bytes):", mensagem_criptografada)
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             # Exibir info da imagem original
             imagem = Image.open(caminho_imagem)
             print("Tamanho da imagem original:", os.path.getsize(caminho_imagem), "bytes")
-            # imagem.show() # Descomente se quiser ver a imagem automaticamente
+            # imagem.show() # Descomente se quiser ver a imagem
 
             # Esconder a mensagem (Tarefa 1)
             imagem_saida = "nova_imagem.png"
@@ -66,13 +66,13 @@ if __name__ == "__main__":
 
             imagem_nova = Image.open(imagem_saida)
             print("Tamanho da imagem com mensagem:", os.path.getsize(imagem_saida), "bytes")
-            # imagem_nova.show() # Descomente se quiser ver a imagem automaticamente
+            # imagem_nova.show() # Descomente se quiser ver a imagem
 
             print("\n [SUCESSO] Mensagem escondida com sucesso em 'nova_imagem.png'.")
-            print(" Lembre-se de enviar 'chave.key' e 'nova_imagem.png' para o receptor.")
+            print(" Lembre-se de enviar 'chave.key' e 'nova_imagem.png' para o computador receptor.")
 
 
-        # OPÇÃO 2: Revelar e descriptografar mensagem (Receptor)
+        # OPÇÃO 2: Revelar e descriptografar mensagem (comp. Receptor)
         elif opcao == "2":
             # REQUISITO: A chave deve existir
             if not fernet:
@@ -103,7 +103,7 @@ if __name__ == "__main__":
                     f"\n [ERRO] Falha ao descriptografar. A CHAVE PODE ESTAR ERRADA ou a mensagem corrompida. Detalhe: {e}")
 
 
-        # OPÇÃO 3: Executar teste do Qui-Quadrado (Desafio Adicional 3b)
+        # OPÇÃO 3: Executar teste do Qui-Quadrado (funcional, mas não ideal)
         elif opcao == "3":
             img_original = input("Caminho da imagem original limpa (ex: abacaxi.png): ").strip()
             img_estego = input("Caminho da imagem com mensagem (ex: nova_imagem.png): ").strip()
@@ -131,7 +131,7 @@ if __name__ == "__main__":
             chave = carregar_chave()
             fernet = Fernet(chave)
             print(" [SUCESSO] Nova chave gerada e salva em 'chave.key'.")
-            print(" ATENÇÃO: Envie este arquivo 'chave.key' para o Receptor.")
+            print(" ATENÇÃO: Envie este arquivo 'chave.key' para o computador Receptor.")
 
 
         # OPÇÃO 5: Sair
